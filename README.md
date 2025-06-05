@@ -1,60 +1,100 @@
-# EEGTransformer
+# EEGTransformer: Transformer-Based Model for EEG Classification
 
-The `EEGTransformer` class is a transformer-based architecture designed specifically for processing Electroencephalogram (EEG) data.
+This repository presents `EEGTransformer`, a Transformer-based architecture tailored for processing Electroencephalogram (EEG) data. The model leverages self-attention mechanisms to capture intricate spatial and temporal dependencies inherent in EEG signals, facilitating effective classification tasks.
 
-## Parameters
+## Features
 
-- `num_channels` (int): Specifies the number of channels in the EEG dataset.
-- `num_timepoints` (int): Indicates the number of time points or the sequence length in the EEG data.
-- `output_dim` (int): Defines the output dimensionality for the classifier layer.
-- `hidden_dim` (int): Specifies the hidden layer dimensionality.
-- `num_heads` (int): Determines the number of attention heads to be used in the multi-head self-attention mechanism.
-- `key_query_dim` (int): Denotes the dimensionality for the key/query pairs in the self-attention mechanism.
-- `hidden_ffn_dim` (int): Indicates the hidden layer dimensionality for the feed-forward network.
-- `intermediate_dim` (int): Refers to the dimensionality of the intermediate layer in the feed-forward network.
-- `ffn_output_dim` (int): Specifies the output size of the feed-forward network.
+* **Transformer Architecture**: Utilizes multi-head self-attention to model complex relationships in EEG data.
+* **Customizable Parameters**: Offers flexibility through adjustable hyperparameters to suit various EEG datasets.
+* **End-to-End Pipeline**: Includes data preprocessing, model training, and evaluation within a cohesive framework.
+* **Visualization Tools**: Provides tools for visualizing attention weights and model performance metrics.([github.com][2])
 
-## Attributes
+## Installation
 
-- `positional_encoding` (torch.Tensor): A tensor of shape `(num_channels, num_timepoints)` that imparts the sequence position information.
-- `multihead_attn` (nn.MultiheadAttention): Implements the multi-head self-attention mechanism.
-- `ffn` (nn.Sequential): Constructs a feed-forward network composed of a linear transformation followed by ReLU activation and another linear transformation.
-- `norm1` and `norm2` (nn.LayerNorm): Execute layer normalization.
-- `classifier` (nn.Linear): Deploys a final linear transformation layer to categorize the input into designated classes.
+1. **Clone the repository**:
 
-## Methods
+   ```bash
+   git clone https://github.com/berdakh/Transformers-for-EEG-classification.git
+   cd Transformers-for-EEG-classification
+   ```
 
-- `forward(X)`: Outlines the forward propagation for the model.
-    - `X` (torch.Tensor): The input tensor for EEG data, which should have a shape of `(batch_size, num_channels, num_timepoints)`.
-    - **Steps**:
-        1. Standardize the input tensor.
-        2. Apply positional encoding.
-        3. Implement multi-head self-attention.
-        4. Reshape the attention output and apply layer normalization.
-        5. Forward the data through the feed-forward network.
-        6. Flatten the resultant tensor and direct it through a classifier layer.
-        7. Yield the final output.
 
-## Notes
 
-- The model applies layer normalization after the multi-head self-attention and feed-forward network stages.
-- Positional encoding is utilized to impart sequence position information to the model, which can either be relative or absolute.
-- The classifier layer flattens the model output and categorizes it into `output_dim` classes.
+2. **Create a virtual environment (optional but recommended)**:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+
+
+3. **Install required packages**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+
+
+*Note: Ensure that [PyTorch](https://pytorch.org/) is installed, as it's central to the functionalities provided.*
 
 ## Usage
 
-To employ the `EEGTransformer` model, instantiate the class using the desired parameters. Then, similar to any other PyTorch model, forward the input data to the model and utilize the returned output for either training or inference.
+The primary script for training and evaluating the model is `EEGTransformer_Class.ipynb`. This Jupyter Notebook demonstrates the complete workflow, including data loading, model instantiation, training, and evaluation.([github.com][1], [github.com][3])
 
-```python
-# Sample Usage
-model = EEGTransformer(num_channels=32, num_timepoints=200, output_dim=2,
-                       hidden_dim=512, num_heads=8, key_query_dim=512,
-                       hidden_ffn_dim=512, intermediate_dim=2048,
-                       ffn_output_dim=32)
+*To execute the notebook:*
 
-input_data = torch.randn(64, 32, 200)
-output = model(input_data)
+1. Launch Jupyter Notebook:
 
-```
+   ```bash
+   jupyter notebook
+   ```
 
-Ensure that the model is paired with a compatible loss function and optimizer for effective training. Depending on the specifics of the EEG dataset or application requirements, the model can be further refined.
+
+
+2. Open `EEGTransformer_Class.ipynb` and follow the cells sequentially.([github.com][1])
+
+## Model Architecture
+
+The `EEGTransformer` class is designed with the following components:([github.com][1])
+
+* **Input Parameters**:
+
+  * `num_channels` (int): Number of EEG channels.
+  * `num_timepoints` (int): Number of time points in the EEG data.
+  * `output_dim` (int): Dimensionality of the output layer.
+  * `hidden_dim` (int): Dimensionality of the hidden layers.
+  * `num_heads` (int): Number of attention heads in the multi-head attention mechanism.
+  * `key_query_dim` (int): Dimensionality of the key and query vectors.
+  * `hidden_ffn_dim` (int): Dimensionality of the hidden layer in the feed-forward network.
+  * `intermediate_dim` (int): Dimensionality of the intermediate layer.
+  * `ffn_output_dim` (int): Output dimensionality of the feed-forward network.([github.com][1])
+
+* **Layers**:
+
+  * `positional_encoding` (torch.Tensor): Adds positional information to the input data.
+  * `multihead_attn` (nn.MultiheadAttention): Applies multi-head self-attention mechanism.
+  * `ffn` (nn.Sequential): Feed-forward network comprising linear transformations and ReLU activations.
+  * `norm1` and `norm2` (nn.LayerNorm): Layer normalization for stabilizing the learning process.([github.com][1])
+
+* **Forward Method**:
+
+  * Standardizes the input tensor.
+  * Applies positional encoding.
+  * Implements multi-head self-attention.
+  * Applies layer normalization and feed-forward network.
+  * Outputs the final classification predictions.([github.com][1], [scispace.com][4])
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+This repository was developed by [Berdakh Abibullaev](https://github.com/berdakh), focusing on the application of Transformer models for EEG signal classification.
+
+---
+
+*For detailed explanations and methodologies, refer to the `EEGTransformer_Class.ipynb` notebook included in the repository.*
+ 
